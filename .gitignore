@@ -8,3 +8,7 @@ wheels/
 
 # Virtual environments
 .venv
+
+# other
+.qodo
+continue_tutorial.py
