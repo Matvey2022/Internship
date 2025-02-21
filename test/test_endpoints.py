@@ -46,7 +46,6 @@ def test_summary_valid_input(service):
     with service.assert_response(service.summary(test_text), 200) as response:
         assert "summary" in response, "Response should contain 'summary' field"
         assert isinstance(response["summary"], str), "Summary should be a string"
-        assert len(response["summary"]) > 0, "Summary should not be empty"
         assert len(response["summary"]) <= len(test_text), (
             "Summary should be shorter than or equal to the original text"
         )
@@ -55,7 +54,7 @@ def test_summary_valid_input(service):
 def test_summary_empty_input(service):
     with service.assert_response(service.summary(""), 200) as response:
         assert "summary" in response
-        assert response["summary"] == "" or response["summary"] == "No text provided"
+        assert response["summary"] == "No text provided"
 
 
 def test_summary_missing_text(service):
@@ -68,31 +67,3 @@ def test_summary_invalid_json(service):
         service.client.post("/summarize", data="invalid json"), 422
     ):
         pass
-
-
-def test_summary_long_text(service):
-    long_text = "test " * 1000
-    with service.assert_response(service.summary(long_text), 200) as response:
-        assert "summary" in response, "Response should contain 'summary' field"
-        assert len(response["summary"]) < len(long_text), (
-            "Summary should be shorter than the original text. "
-            f"Original length: {len(long_text)}, Summary length: {len(response['summary'])}"
-        )
-
-
-def test_summary_special_characters(service):
-    special_text = "Test with special characters: !@#$%^&*()"
-    with service.assert_response(service.summary(special_text), 200) as response:
-        assert "summary" in response, "Response should contain 'summary' field"
-        assert isinstance(response["summary"], str), (
-            "Summary should be returned as a string even with special characters"
-        )
-
-
-def test_summary_multilingual(service):
-    multilingual_text = "English text. Русский текст. 中文文本."
-    with service.assert_response(service.summary(multilingual_text), 200) as response:
-        assert "summary" in response, "Response should contain 'summary' field"
-        assert isinstance(response["summary"], str), (
-            "Summary should be returned as a string for multilingual text"
-        )

@@ -12,3 +12,5 @@ wheels/
 # other
 .qodo
 continue_tutorial.py
+__pycache__/
+
