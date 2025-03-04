@@ -10,7 +10,12 @@ wheels/
 .venv
 
 # other
-.qodo
 continue_tutorial.py
+hello.py
+diabetes_dataset.csv
+without_familyhistory.py
+.qodo
+mlruns/
+catboost_info/
 __pycache__/
 
